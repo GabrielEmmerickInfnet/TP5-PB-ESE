@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simplespdv-deployment
+spec:
+  replicas: 2  # Quantidade de réplicas do serviço
+  selector:
+    matchLabels:
+      app: simplespdv
+  template:
+    metadata:
+      labels:
+        app: simplespdv
+    spec:
+      containers:
+      - name: simplespdv
+        image: simplespdv:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simplespdv-service
+spec:
+  selector:
+    app: simplespdv
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
